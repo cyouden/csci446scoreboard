@@ -1,4 +1,9 @@
 Scoreboard::Application.routes.draw do
+  controller :highscores do
+    get 'addscore' => :create
+    get 'getscores' => :list
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

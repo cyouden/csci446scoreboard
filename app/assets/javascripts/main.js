@@ -31,10 +31,12 @@ function resetGame() {
 }
 
 function populateHighScores(scores) {
-  $('div#highScores').text('');
-  for (var i = 0; i < scores.length; ++i) {
-    $('div#highScores').append("<p>" + scores[i][0] + " " + scores[i][1] + "</p>");
-  }
+  $.ajax({
+    url: "/getscores",
+    dataType: "html"
+  }).done(function(data) {
+      $('div#highScores').html(data);
+    });
 }
 
 function updateScore(score) {
@@ -76,7 +78,14 @@ function endGame(msg) {
 
 function winDialog() {
   var name = window.prompt("What is your name?","");
-  highScores.push([guessesLeft, name ? name : "Guest"]);
+  
+  $.ajax({
+    url: "/addscore",
+    dataType: "json",
+    data: { "name": name ? name : "Guest", "score": "" + guessesLeft }
+  })
+  
+  //highScores.push([guessesLeft, name ? name : "Guest"]);
   populateHighScores(highScores);
 }
 
